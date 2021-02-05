@@ -209,3 +209,21 @@ describe Rook do
     end
   end
 end
+
+describe Queen do
+  describe "#initialize" do
+    context "if I look at the legal moves from e4" do
+      subject(:queen) { described_class.new("white") }
+      it "it includes b1 and a4" do
+        moves = queen.legal_moves[[3, 4]]
+        expect(moves.include?([0, 1])).to eq(true)
+        expect(moves.include?([3, 0])).to eq(true)
+      end
+      it "it doesn't include a1 or h5" do
+        moves = queen.legal_moves[[3, 4]]
+        expect(moves.include?([0, 0])).to eq(false)
+        expect(moves.include?([4, 7])).to eq(false)
+      end
+    end
+  end
+end
