@@ -1,3 +1,4 @@
+require '../lib/piece.rb'
 require '../lib/board.rb'
 require '../lib/player.rb'
 require '../lib/pawn.rb'
@@ -6,7 +7,7 @@ require '../lib/knight.rb'
 require '../lib/bishop.rb'
 require '../lib/queen.rb'
 require '../lib/king.rb'
-require '../lib/piece.rb'
+
 
 describe Board do
   describe "#initialize" do
@@ -87,6 +88,26 @@ describe Bishop do
         moves = bishop.legal_moves[[0, 2]]
         expect(moves.include?([2, 3])).to eq(false)
         expect(moves.include?([4, 4])).to eq(false)
+      end
+    end
+  end
+end
+
+describe King do
+  describe "#initialize" do
+    context "if I look at the legal moves from e4" do
+      subject(:king) { described_class.new("white") }
+
+      it "it includes e5 and f3" do
+        moves = king.legal_moves[[3, 4]]
+        expect(moves.include?([4, 4])).to eq(true)
+        expect(moves.include?([2, 5])).to eq(true)
+      end
+
+      it "it doesn't include c2 or g6" do
+        moves = king.legal_moves[[3, 4]]
+        expect(moves.include?([1, 2])).to eq(false)
+        expect(moves.include?([5, 6])).to eq(false)
       end
     end
   end
