@@ -1,4 +1,3 @@
-require '../lib/piece.rb'
 class Bishop
   include Piece
   attr_reader :legal_moves
