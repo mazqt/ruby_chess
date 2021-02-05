@@ -132,3 +132,62 @@ describe Knight do
     end
   end
 end
+
+describe Pawn do
+  describe "#initialize" do
+    context "if the pawn is white," do
+      subject(:white_pawn) { described_class.new("white") }
+      context "the legal moves from d2" do
+        it "are d3 and d4" do
+          moves = white_pawn.legal_moves[[1, 3]]
+          expect(moves.include?([2, 3])).to eq(true)
+          expect(moves.include?([3, 3])).to eq(true)
+        end
+        it "does not include d1 or d5" do
+          moves = white_pawn.legal_moves[[1, 3]]
+          expect(moves.include?([0, 3])).to eq(false)
+          expect(moves.include?([4, 3])).to eq(false)
+        end
+      end
+      context "the legal captures from d2" do
+        it "are c3 and e3" do
+          captures = white_pawn.legal_captures[[1, 3]]
+          expect(captures.include?([2, 2])).to eq(true)
+          expect(captures.include?([2, 4])).to eq(true)
+        end
+        it "doesn't include c4 or b3" do
+          captures = white_pawn.legal_captures[[1, 3]]
+          expect(captures.include?([3, 2])).to eq(false)
+          expect(captures.include?([2, 1])).to eq(false)
+        end
+      end
+    end
+    context "if the pawn is black" do
+      subject(:black_pawn) { described_class.new("black") }
+      context "the legal moves from d7" do
+        it "are d6 and d5" do
+          moves = black_pawn.legal_moves[[6, 3]]
+          expect(moves.include?([5, 3])).to eq(true)
+          expect(moves.include?([4, 3])).to eq(true)
+        end
+        it "doesn't include d8 or d4" do
+          moves = black_pawn.legal_moves[[6, 3]]
+          expect(moves.include?([7, 3])).to eq(false)
+          expect(moves.include?([3, 3])).to eq(false)
+        end
+      end
+      context "the legal captures from d7" do
+        it "are c6 and e6" do
+          captures = black_pawn.legal_captures[[6, 3]]
+          expect(captures.include?([5, 2])).to eq(true)
+          expect(captures.include?([5, 4])).to eq(true)
+        end
+        it "doesn't include b6 or e5" do
+          captures = black_pawn.legal_captures[[6, 3]]
+          expect(captures.include?([5, 1])).to eq(false)
+          expect(captures.include?([4, 4])).to eq(false)
+        end
+      end
+    end
+  end
+end
