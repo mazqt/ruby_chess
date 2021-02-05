@@ -78,13 +78,13 @@ describe Bishop do
   describe "#initialize" do
     context "if I look at the legal moves from c1" do
       subject(:bishop) { described_class.new("white") }
-      it "includes e3 and b2" do
+      it "it includes e3 and b2" do
         moves = bishop.legal_moves[[0, 2]]
         expect(moves.include?([2, 4])).to eq(true)
         expect(moves.include?([1, 1])).to eq(true)
       end
 
-      it "doesn't include d3 and e5" do
+      it "it doesn't include d3 and e5" do
         moves = bishop.legal_moves[[0, 2]]
         expect(moves.include?([2, 3])).to eq(false)
         expect(moves.include?([4, 4])).to eq(false)
@@ -108,6 +108,26 @@ describe King do
         moves = king.legal_moves[[3, 4]]
         expect(moves.include?([1, 2])).to eq(false)
         expect(moves.include?([5, 6])).to eq(false)
+      end
+    end
+  end
+end
+
+describe Knight do
+  describe "#initialize" do
+    context "if I look at the legal moves from d5" do
+      subject(:knight) { described_class.new("white") }
+
+      it "it includes e7 and b4" do
+        moves = knight.legal_moves[[4, 3]]
+        expect(moves.include?([6, 4])).to eq(true)
+        expect(moves.include?([3, 1])).to eq(true)
+      end
+
+      it "it doesn't include g3 or h6" do
+        moves = knight.legal_moves[[4, 3]]
+        expect(moves.include?([2, 6])).to eq(false)
+        expect(moves.include?([5, 7])).to eq(false)
       end
     end
   end
