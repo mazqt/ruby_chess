@@ -191,3 +191,21 @@ describe Pawn do
     end
   end
 end
+
+describe Rook do
+  describe "#initialize" do
+    context "if I look at the legal moves from f4" do
+      subject(:rook) { described_class.new("white") }
+      it "it includes f6 and b4" do
+        moves = rook.legal_moves[[3, 5]]
+        expect(moves.include?([3, 1])).to eq(true)
+        expect(moves.include?([5, 5])).to eq(true)
+      end
+      it "doesn't include e3 or d1" do
+        moves = rook.legal_moves[[3, 5]]
+        expect(moves.include?([2, 4])).to eq(false)
+        expect(moves.include?([0, 3])).to eq(false)
+      end
+    end
+  end
+end
