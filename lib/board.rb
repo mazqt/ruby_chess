@@ -1,3 +1,4 @@
+require 'byebug'
 class Board
   attr_reader :board
 
@@ -61,6 +62,33 @@ class Board
     board_position << values[1].to_i - 1
     board_position << letter_to_vertical[values[0]]
     board_position
+  end
+
+  def move_piece(piece_pos, end_pos)
+    piece_pos = convert_input(piece_pos)
+    end_pos = convert_input(end_pos)
+    piece = @board[piece_pos[0]][piece_pos[1]]
+
+    change_board(end_pos, piece)
+    change_board(piece_pos, "_")
+  end
+
+  def change_board(position, value)
+    @board[position[0]][position[1]] = value
+  end
+
+  def is_move_legal?(piece_pos, end_pos)
+    piece_pos = convert_input(piece_pos)
+    end_pos = convert_input(end_pos)
+    piece = @board[piece_pos[0]][piece_pos[1]]
+    moves = piece.legal_moves[piece_pos]
+
+    if !piece.is_a?(Pawn)
+      return false if !moves.include?(end_pos)
+    else
+      captures = piece.legal_captures[piece_pos]
+      return false if !moves.include?(end_pos) && !captures.include?(end_pos)
+    end
   end
 
 end
