@@ -77,18 +77,39 @@ describe Board do
     context "when a move is legal and the path is clear" do
       subject(:starting_board) { described_class.new }
       before do
-        allow(starting_board).to receive(:clear_path?).and_return(true)
+        starting_board.move_piece([1, 2], [2, 2])
       end
       it "the piece is moved to the desired location" do
-        starting_board.move_piece("c2", "c3")
-        new_position = starting_board.board[2, 2]
-        expect(new_position.is_a?(Rook)).to eq(true)
+        new_position = starting_board.board[2][2]
+        expect(new_position.is_a?(Pawn)).to eq(true)
+      end
+      it "the old position is now empty" do
+        old_position = starting_board.board[1][2]
+        expect(old_position).to eq("_")
       end
     end
   end
 
   describe "#clear_path?" do
-
+    context "when the path from d2 to d4" do
+      context "is clear" do
+        subject(:clear_straight) { described_class.new }
+        it "it returns true" do
+          result = clear_straight.clear_path?("d2", "d4")
+          expect(result).to eq(true)
+        end
+      end
+      context "isn't clear" do
+        subject(:blocked_straight) { described_class.new }
+        before do
+          blocked_straight.move_piece("d6", "d3")
+        end
+        it "it returns false" do
+          result = blocked_straight.clear_path?("d2", "d4")
+          expect(result).to eq(false)
+        end
+      end
+    end
   end
 
   describe "#capture" do
