@@ -72,6 +72,36 @@ describe Board do
       end
     end
   end
+
+  describe "#move_piece" do
+    context "when a move is legal and the path is clear" do
+      subject(:starting_board) { described_class.new }
+      before do
+        allow(starting_board).to receive(:clear_path?).and_return(true)
+      end
+      it "the piece is moved to the desired location" do
+        starting_board.move_piece("c2", "c3")
+        new_position = starting_board.board[2, 2]
+        expect(new_position.is_a?(Rook)).to eq(true)
+      end
+    end
+  end
+
+  describe "#clear_path?" do
+
+  end
+
+  describe "#capture" do
+
+  end
+
+  describe "#check" do
+
+  end
+
+  describe "#checkmate" do
+
+  end
 end
 
 describe Bishop do
@@ -187,6 +217,30 @@ describe Pawn do
           expect(captures.include?([5, 1])).to eq(false)
           expect(captures.include?([4, 4])).to eq(false)
         end
+      end
+    end
+  end
+  describe "#promote" do
+    context "when a white pawn has crossed the board and chooses to become a rook" do
+      subject(:white_pawn) { described_class.new("white") }
+      before do
+        input = "rook"
+        allow(white_pawn).to receive(:gets).and_return(input)
+      end
+      it "it can become a rook" do
+        promoted_white_piece = white_pawn.promote
+        expect(promoted_white_piece.is_a?(Rook)).to eq(true)
+      end
+    end
+    context "when a white pawn has crossed the board and chooses to become a queen" do
+      subject(:white_pawn) { described_class.new("white") }
+      before do
+        input = "queen"
+        allow(white_pawn).to receive(:gets).and_return(input)
+      end
+      it "it can become a rook" do
+        promoted_white_piece = white_pawn.promote
+        expect(promoted_white_piece.is_a?(Queen)).to eq(true)
       end
     end
   end

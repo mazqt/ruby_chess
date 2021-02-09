@@ -48,4 +48,20 @@ class Pawn
     legal_moves
   end
 
+  def promote
+    colour = @colour
+    choices = ["bishop", "knight", "queen", "rook"]
+    choice = ""
+
+    until choices.include?(choice)
+      puts "Select what you want to promote your pawn to. Bishop, Knight, Queen, or Rook."
+      choice = gets.chomp.downcase
+    end
+
+    return Bishop.new(colour) if choice == "bishop"
+    return Knight.new(colour) if choice == "knight"
+    return Queen.new(colour) if choice == "queen"
+    return Rook.new(colour) if choice == "rook"
+  end
+
 end
