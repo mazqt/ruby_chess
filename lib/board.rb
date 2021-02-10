@@ -64,34 +64,43 @@ class Board
     board_position
   end
 
-  def move_piece(piece_pos, end_pos)
-<<<<<<< HEAD
-=======
-    piece_pos = convert_input(piece_pos)
-    end_pos = convert_input(end_pos)
->>>>>>> bc4e56eac56e4cdb53da634d94f5217235bbc60b
-    piece = @board[piece_pos[0]][piece_pos[1]]
+  def move_piece(from, to)
+    piece = @board[from[0]][from[1]]
 
-    change_board(end_pos, piece)
-    change_board(piece_pos, "_")
+    change_board(to, piece)
+    change_board(from, "_")
   end
 
   def change_board(position, value)
     @board[position[0]][position[1]] = value
   end
 
-  def is_move_legal?(piece_pos, end_pos)
-    piece_pos = convert_input(piece_pos)
-    end_pos = convert_input(end_pos)
-    piece = @board[piece_pos[0]][piece_pos[1]]
-    moves = piece.legal_moves[piece_pos]
+  def is_move_legal?(from, to)
+    from = convert_input(from)
+    to = convert_input(to)
+    piece = @board[from[0]][from[1]]
+    moves = piece.legal_moves[from]
 
     if !piece.is_a?(Pawn)
-      return false if !moves.include?(end_pos)
+      return false if !moves.include?(to)
     else
-      captures = piece.legal_captures[piece_pos]
-      return false if !moves.include?(end_pos) && !captures.include?(end_pos)
+      captures = piece.legal_captures[from]
+      return false if !moves.include?(to) && !captures.include?(to)
     end
+  end
+
+  def clear_path?(from, to)
+    if from[1] == to[1]
+      horizontal = from[1]
+      ((from[0] + 1)...to[0]).each { |vertical| return false if @board[vertical][horizontal] != "_"} if to[0] > from[0]
+      ((to[0] + 1)...from[0]).each { |vertical| return false if @board[vertical][horizontal] != "_"} if from[0] > to[0]
+    elsif from[0] == to[0]
+      vertical = from[0]
+      ((from[1] + 1)...to[1]).each { |horizontal| return false if @board[vertical][horizontal] != "_" } if to[1] > from[1]
+      ((to[1] + 1)...from[1]).each { |horizontal| return false if @board[vertical][horizontal] != "_"} if from[1] > to[1]
+    else
+    end
+    true
   end
 
 end

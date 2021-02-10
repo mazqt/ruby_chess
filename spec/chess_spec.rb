@@ -91,21 +91,42 @@ describe Board do
   end
 
   describe "#clear_path?" do
-    context "when the path from d2 to d4" do
+    context "when the path from d2 to d4, or d4 to d2," do
       context "is clear" do
-        subject(:clear_straight) { described_class.new }
+        subject(:clear_vertical) { described_class.new }
         it "it returns true" do
-          result = clear_straight.clear_path?("d2", "d4")
+          result = clear_vertical.clear_path?([1, 3], [3, 3])
+          result_reverse = clear_vertical.clear_path?([3, 3], [1, 3])
+          expect(result).to eq(true)
+          expect(result_reverse).to eq(true)
+        end
+      end
+      context "isn't clear" do
+        subject(:blocked_vertical) { described_class.new }
+        before do
+          blocked_vertical.move_piece([6, 3], [2, 3])
+        end
+        it "it returns false" do
+          result = blocked_vertical.clear_path?([1, 3], [3, 3])
+          expect(result).to eq(false)
+        end
+      end
+    end
+    context "when the path from g4 to d4" do
+      context "is clear" do
+        subject(:clear_horizontal) { described_class.new }
+        it "it returns true" do
+          result = clear_horizontal.clear_path?([3, 6], [3, 3])
           expect(result).to eq(true)
         end
       end
       context "isn't clear" do
-        subject(:blocked_straight) { described_class.new }
+        subject(:blocked_horizontal) { described_class.new }
         before do
-          blocked_straight.move_piece("d6", "d3")
+          blocked_horizontal.move_piece([6, 4], [3, 4])
         end
         it "it returns false" do
-          result = blocked_straight.clear_path?("d2", "d4")
+          result = blocked_horizontal.clear_path?([1, 6], [1, 3])
           expect(result).to eq(false)
         end
       end
@@ -115,7 +136,6 @@ describe Board do
   describe "#capture" do
 
   end
-
   describe "#check" do
 
   end
