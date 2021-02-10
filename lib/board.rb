@@ -99,6 +99,23 @@ class Board
       ((from[1] + 1)...to[1]).each { |horizontal| return false if @board[vertical][horizontal] != "_" } if to[1] > from[1]
       ((to[1] + 1)...from[1]).each { |horizontal| return false if @board[vertical][horizontal] != "_"} if from[1] > to[1]
     else
+      upward = to[0] > from[0] ? true : false
+      rightward = to[1] > from[1] ? true : false
+      distance = (from[0] - to[0]).abs
+      if upward
+        if rightward
+          (1...distance).each { |dif| return false if @board[from[0] + dif][from[1] + dif] != "_"}
+        else
+          (1...distance).each { |dif| return false if @board[from[0] + dif][from[1] - dif] != "_"}
+        end
+      else
+        if rightward
+          (1...distance).each { |dif| return false if @board[from[0] - dif][from[1] + dif] != "_"}
+        else
+          (1...distance).each { |dif| return false if @board[from[0] - dif][from[1] - dif] != "_"}
+        end
+      end
+
     end
     true
   end

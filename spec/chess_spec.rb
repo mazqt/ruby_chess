@@ -131,6 +131,82 @@ describe Board do
         end
       end
     end
+    context "when the path from d4 to f6" do
+      context "is clear" do
+        subject(:clear_diagonal) { described_class.new }
+        it "it returns true" do
+          result = clear_diagonal.clear_path?([3, 3], [5, 5])
+          expect(result).to eq(true)
+        end
+      end
+      context "is blocked" do
+        subject(:blocked_diagonal) { described_class.new }
+        before do
+          blocked_diagonal.move_piece([6, 2], [4, 4])
+        end
+        it "returns false" do
+          result = blocked_diagonal.clear_path?([3, 3], [5, 5])
+          expect(result).to eq(false)
+        end
+      end
+    end
+    context "when the path from d4 to b6" do
+      context "is clear" do
+        subject(:clear_diagonal) { described_class.new }
+        it "it returns true" do
+          result = clear_diagonal.clear_path?([3, 3], [1, 5])
+          expect(result).to eq(true)
+        end
+      end
+      context "is blocked" do
+        subject(:blocked_diagonal) { described_class.new }
+        before do
+          blocked_diagonal.move_piece([6, 2], [2, 4])
+        end
+        it "returns false" do
+          result = blocked_diagonal.clear_path?([3, 3], [1, 5])
+          expect(result).to eq(false)
+        end
+      end
+    end
+    context "when the path from d4 to b2" do
+      context "is clear" do
+        subject(:clear_diagonal) { described_class.new }
+        it "it returns true" do
+          result = clear_diagonal.clear_path?([3, 3], [1, 1])
+          expect(result).to eq(true)
+        end
+      end
+      context "is blocked" do
+        subject(:blocked_diagonal) { described_class.new }
+        before do
+          blocked_diagonal.move_piece([6, 2], [2, 2])
+        end
+        it "returns false" do
+          result = blocked_diagonal.clear_path?([3, 3], [1, 1])
+          expect(result).to eq(false)
+        end
+      end
+    end
+    context "when the path from d4 to g1" do
+      context "is clear" do
+        subject(:clear_diagonal) { described_class.new }
+        before do
+          clear_diagonal.move_piece([1, 5], [2, 7])
+        end
+        it "it returns true" do
+          result = clear_diagonal.clear_path?([3, 3], [0, 6])
+          expect(result).to eq(true)
+        end
+      end
+      context "is blocked" do
+        subject(:blocked_diagonal) { described_class.new }
+        it "returns false" do
+          result = blocked_diagonal.clear_path?([3, 3], [0, 6])
+          expect(result).to eq(false)
+        end
+      end
+    end
   end
 
   describe "#capture" do
