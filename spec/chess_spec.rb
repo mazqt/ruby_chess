@@ -210,7 +210,14 @@ describe Board do
   end
 
   describe "#capture" do
-
+    context "when a piece is captured" do
+      subject(:board) { described_class.new }
+      it "it's added to the captured array" do
+        piece = Rook.new("white")
+        board.capture(piece)
+        expect(board.captured_pieces.include?(piece)).to eq(true)
+      end
+    end
   end
   describe "#check" do
 

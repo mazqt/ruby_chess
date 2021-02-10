@@ -1,10 +1,11 @@
 require 'byebug'
 class Board
-  attr_reader :board
+  attr_reader :board, :captured_pieces
 
   def initialize()
     @board = Array.new(8) { Array.new(8, "_") }
     populate_board()
+    @captured_pieces = []
   end
 
   def populate_board
@@ -66,9 +67,16 @@ class Board
 
   def move_piece(from, to)
     piece = @board[from[0]][from[1]]
+    new_pos = @board[to[0]][to[1]]
+    capture(new_pos) if new_pos != "_"
 
     change_board(to, piece)
     change_board(from, "_")
+  end
+
+  def capture(piece)
+    @captured_pieces << piece
+    puts @captured_pieces
   end
 
   def change_board(position, value)
