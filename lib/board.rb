@@ -65,6 +65,11 @@ class Board
   end
 
   def move_piece(piece_pos, end_pos)
+<<<<<<< HEAD
+=======
+    piece_pos = convert_input(piece_pos)
+    end_pos = convert_input(end_pos)
+>>>>>>> bc4e56eac56e4cdb53da634d94f5217235bbc60b
     piece = @board[piece_pos[0]][piece_pos[1]]
 
     change_board(end_pos, piece)
