@@ -128,4 +128,8 @@ class Board
     true
   end
 
+  def check
+
+  end
+
 end

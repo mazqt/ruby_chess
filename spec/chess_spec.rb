@@ -220,7 +220,24 @@ describe Board do
     end
   end
   describe "#check" do
-
+    context "when a king is in check (its position is a legal move with a clear path for another opposing piece)" do
+      subject(:checked_board) { described_class.new }
+      before do
+        checked_board.move_piece([0, 4], [2, 4])
+        checked_board.move_piece([7, 3], [5, 1])
+      end
+      it "it returns true" do
+        result = checked_board.check()
+        expect(result).to eq(true)
+      end
+    end
+    context "when neither king is in check" do
+      subject(:unchecked_board) { described_class.new }
+      it "it returns false" do
+        result = unchecked_board.check()
+        expect(result).to eq(false)
+      end
+    end
   end
 
   describe "#checkmate" do
