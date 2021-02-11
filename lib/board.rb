@@ -84,8 +84,6 @@ class Board
   end
 
   def is_move_legal?(from, to)
-    from = convert_input(from)
-    to = convert_input(to)
     piece = @board[from[0]][from[1]]
     moves = piece.legal_moves[from]
 
@@ -93,8 +91,13 @@ class Board
       return false if !moves.include?(to)
     else
       captures = piece.legal_captures[from]
-      return false if !moves.include?(to) && !captures.include?(to)
+      if @board[to[0]][to[1]] == "_"
+        return false if !moves.include?(to)
+      else
+        return false if !captures.include?(to)
+      end
     end
+    true
   end
 
   def clear_path?(from, to)
@@ -129,7 +132,29 @@ class Board
   end
 
   def check
+    white_king = find_king("white")
+    black_king = find_king("black")
 
+    @board.each_with_index do |row, y|
+      row.each_with_index do |piece, x|
+        if piece != "_"
+          if piece.colour == "white"
+            return true if (is_move_legal?([y, x], black_king) && clear_path?([y, x], black_king))
+          else
+            return true if (is_move_legal?([y, x], white_king) && clear_path?([y, x], white_king))
+          end
+        end
+      end
+    end
+    false
+  end
+
+  def find_king(colour)
+    @board.each_with_index do |row, y|
+      row.each_with_index do |piece, x|
+        return [y, x] if piece.is_a?(King) && colour == piece.colour
+      end
+    end
   end
 
 end
