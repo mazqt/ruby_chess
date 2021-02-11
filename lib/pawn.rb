@@ -1,6 +1,6 @@
 class Pawn
   include Piece
-  attr_reader :legal_moves, :legal_captures
+  attr_reader :legal_moves, :legal_captures, :colour
 
    def initialize(colour)
     @colour = colour

@@ -1,6 +1,6 @@
 class King
   include Piece
-  attr_reader :legal_moves
+  attr_reader :legal_moves, :colour
 
    def initialize(colour)
     @colour = colour
