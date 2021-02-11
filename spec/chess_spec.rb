@@ -241,7 +241,43 @@ describe Board do
   end
 
   describe "#checkmate" do
-
+    context "when every possible move leads to check" do
+      subject(:mated_board) { described_class.new }
+      before do
+        mated_board.move_piece([0, 4], [2, 4])
+        mated_board.move_piece([7, 3], [5, 4])
+      end
+      it "it returns true" do
+        result = mated_board.checkmate
+        expect(result).to eq(true)
+      end
+    end
+    context "when there's a move to get out of check" do
+      context "by moving your king" do
+        subject(:escape_board) { described_class.new }
+        before do
+          escape_board.move_piece([0, 4], [2, 4])
+          escape_board.move_piece([7, 3], [5, 4])
+          escape_board.move_piece([1, 5], [2, 7])
+        end
+        it "it returns false" do
+          result = escape_board.checkmate
+          expect(result).to eq(false)
+        end
+      end
+      context "by blocking with another piece" do
+        subject(:block_board) { described_class.new }
+        before do
+          block_board.move_piece([0, 4], [2, 4])
+          block_board.move_piece([7, 3], [5, 4])
+          block_board.move_piece([0, 3], [2, 3])
+        end
+        it "it returns false" do
+          result = block_board.checkmate
+          expect(result).to eq(false)
+        end
+      end
+    end
   end
 end
 
