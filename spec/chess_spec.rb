@@ -244,11 +244,11 @@ describe Board do
     context "when every possible move leads to check" do
       subject(:mated_board) { described_class.new }
       before do
-        mated_board.move_piece([0, 4], [2, 4])
-        mated_board.move_piece([7, 3], [5, 4])
+        mated_board.move_piece([0, 4], [1, 4])
+        mated_board.move_piece([7, 3], [3, 4])
       end
       it "it returns true" do
-        result = mated_board.checkmate
+        result = mated_board.checkmate("white")
         expect(result).to eq(true)
       end
     end
@@ -261,7 +261,7 @@ describe Board do
           escape_board.move_piece([1, 5], [2, 7])
         end
         it "it returns false" do
-          result = escape_board.checkmate
+          result = escape_board.checkmate("white")
           expect(result).to eq(false)
         end
       end
@@ -273,7 +273,19 @@ describe Board do
           block_board.move_piece([0, 3], [2, 3])
         end
         it "it returns false" do
-          result = block_board.checkmate
+          result = block_board.checkmate("white")
+          expect(result).to eq(false)
+        end
+      end
+      context "by killing an attacking piece" do
+        subject(:kill_board) { described_class.new }
+        before do
+          kill_board.move_piece([0, 4], [2, 4])
+          kill_board.move_piece([7, 3], [5, 4])
+          kill_board.move_piece([0, 5], [2, 7])
+        end
+        it "it returns false" do
+          result = kill_board.checkmate("white")
           expect(result).to eq(false)
         end
       end
