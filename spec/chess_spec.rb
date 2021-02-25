@@ -227,15 +227,17 @@ describe Board do
         checked_board.move_piece([7, 3], [5, 1])
       end
       it "it returns true" do
-        result = checked_board.check()
+        result = checked_board.check("white")
         expect(result).to eq(true)
       end
     end
     context "when neither king is in check" do
       subject(:unchecked_board) { described_class.new }
       it "it returns false" do
-        result = unchecked_board.check()
-        expect(result).to eq(false)
+        result_white = unchecked_board.check("white")
+        result_black = unchecked_board.check("black")
+        expect(result_white).to eq(false)
+        expect(result_black).to eq(false)
       end
     end
   end
@@ -287,6 +289,21 @@ describe Board do
         it "it returns false" do
           result = kill_board.checkmate("white")
           expect(result).to eq(false)
+        end
+        context "but the opponents king is now in check or checkmate" do
+          before do
+          kill_board.move_piece([1, 4], [3, 7])
+          kill_board.move_piece([2, 4], [0, 4])
+          kill_board.move_piece([5, 4], [4, 4])
+          kill_board.move_piece([6, 4], [4, 7])
+          kill_board.move_piece([2, 7], [2, 6])
+          kill_board.move_piece([1, 3], [2, 3])
+          kill_board.move_piece([1, 5], [2, 5])
+          end
+          it "it returns false" do
+            result = kill_board.checkmate("white")
+            expect(result).to eq(false)
+          end
         end
       end
     end

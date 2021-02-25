@@ -159,17 +159,14 @@ class Board
     true
   end
 
-  def check
-    white_king = find_king("white")
-    black_king = find_king("black")
+  def check(colour)
+    king = find_king(colour)
 
     @board.each_with_index do |row, y|
       row.each_with_index do |piece, x|
         if piece != "_"
-          if piece.colour == "white"
-            return true if (is_move_legal?([y, x], black_king) && clear_path?([y, x], black_king))
-          else
-            return true if (is_move_legal?([y, x], white_king) && clear_path?([y, x], white_king))
+          if piece.colour != colour
+            return true if (is_move_legal?([y, x], king) && clear_path?([y, x], king))
           end
         end
       end
@@ -190,7 +187,7 @@ class Board
               if clear_path?([y, x], move)
                 hypothetical_board = Board.new(@board)
                 hypothetical_board.move_piece([y, x], move)
-                return false if !hypothetical_board.check
+                return false if !hypothetical_board.check(colour)
               end
             end
           end
