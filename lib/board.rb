@@ -2,7 +2,7 @@ require 'byebug'
 class Board
   attr_reader :board, :captured_pieces
 
-  def initialize(board = nil)
+  def initialize(board = nil, captured_pieces = nil)
     if board == nil
       @board = Array.new(8) { Array.new(8, "_") }
       populate_board()
@@ -10,7 +10,7 @@ class Board
       @board = Array.new(8) { Array.new(8, "_") }
       copy_board(board)
     end
-    @captured_pieces = []
+    @captured_pieces = captured_pieces || []
   end
 
   def populate_board
@@ -55,18 +55,18 @@ class Board
     end
   end
 
-  def validate_input(input)
+  def self.validate_input(input)
     letters = "abcdefgh"
     numbers = "12345678"
 
     values = input.split("")
     return false if values.length != 2
-    return false if !letters.include?(values[0])
+    return false if !letters.include?(values[0].downcase)
     return false if !numbers.include?(values[1])
     true
   end
 
-  def convert_input(input)
+  def self.convert_input(input)
     return false if !validate_input(input)
     letter_to_vertical = {
       "a" => 0,
@@ -127,6 +127,10 @@ class Board
       return false if @board[from[0]][from[1]].colour == @board[to[0]][to[1]].colour
     end
 
+    if @board[from[0]][from[1]].is_a?(Pawn) && @board[to[0]][to[1]] != "_"
+      return false if from[1] == to[1]
+    end
+
     return true if @board[from[0]][from[1]].is_a?(Knight)
 
     if from[1] == to[1]
@@ -177,6 +181,8 @@ class Board
   def checkmate(colour)
     king_pos = find_king(colour)
 
+    #debugger
+
     @board.each_with_index do |row, y|
       row.each_with_index do |piece, x|
         if piece != "_"
@@ -184,6 +190,7 @@ class Board
             legal_moves = piece.legal_moves[[y, x]]
             legal_moves.each do |move|
               if clear_path?([y, x], move)
+
                 hypothetical_board = Board.new(@board)
                 hypothetical_board.move_piece([y, x], move)
                 return false if !hypothetical_board.check(colour)
@@ -206,13 +213,13 @@ class Board
 
   def print_board
     puts "  a b c d e f g h  "
-    @board.each_with_index do |row, ind|
-      output = "#{ind} "
+    @board.reverse.each_with_index do |row, ind|
+      output = "#{8 - ind} "
       row.each do |piece|
        if piece == "_"
         output += "_ "
        else
-         if piece.colour == "black"
+         if piece.colour == "white"
             output += "♜ " if piece.is_a?(Rook)
             output += "♝ " if piece.is_a?(Bishop)
             output += "♞ " if piece.is_a?(Knight)
@@ -229,10 +236,22 @@ class Board
           end
         end
       end
-      output += "#{ind}"
+      output += "#{8 - ind}"
       puts output
     end
     puts "  a b c d e f g h  "
+  end
+
+  def to_yaml
+    YAML.dump({
+      :board => @board,
+      :captured_pieces => @captured_pieces
+    })
+  end
+
+  def self.from_yaml(string)
+    data = YAML.load string
+    self.new(data[:board], data[:captured_pieces])
   end
 
 end
