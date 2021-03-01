@@ -1,4 +1,3 @@
-require 'byebug'
 class Board
   attr_reader :board, :captured_pieces
 
@@ -180,8 +179,6 @@ class Board
 
   def checkmate(colour)
     king_pos = find_king(colour)
-
-    #debugger
 
     @board.each_with_index do |row, y|
       row.each_with_index do |piece, x|

@@ -1,13 +1,13 @@
-require '../lib/piece.rb'
-require '../lib/board.rb'
-require '../lib/player.rb'
-require '../lib/pawn.rb'
-require '../lib/rook.rb'
-require '../lib/knight.rb'
-require '../lib/bishop.rb'
-require '../lib/queen.rb'
-require '../lib/king.rb'
-require "../lib/game.rb"
+require './lib/piece.rb'
+require './lib/board.rb'
+require './lib/player.rb'
+require './lib/pawn.rb'
+require './lib/rook.rb'
+require './lib/knight.rb'
+require './lib/bishop.rb'
+require './lib/queen.rb'
+require './lib/king.rb'
+require "./lib/game.rb"
 
 game = nil
 input = nil
