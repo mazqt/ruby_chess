@@ -23,6 +23,24 @@ class Game
     File.open(filename, "w"){ |somefile| somefile.puts save}
   end
 
+  def Self.load_game
+    saves = Dir.entries("saves")
+    saves = saves.delete_if { |filename| filename == ".." || filename == "." }
+    puts "The following saved games exist :"
+    saves.each_with_index { |save, index| puts "Index: #{index} Name: #{save}"  }
+    puts "Select a save by entering the corresponding index number. If you enter a non-number value you will be given the first save in the column."
+
+    loop do
+      choice = gets.chomp.to_i
+      if choice >= 0 && choice < saves.length
+        save_file = saves[choice]
+        puts "You've selected #{save_file}"
+        save_data = File.read("saves/#{save_file}")
+        return Game.from_yaml(save_data)
+      end
+    end
+  end
+
   def to_yaml
     YAML.dump ({
       :player1 => @player1,
