@@ -177,7 +177,6 @@ class Board
   def checkmate(colour)
     king_pos = find_king(colour)
 
-    #debugger
     @board.each_with_index do |row, y|
       row.each_with_index do |piece, x|
         if piece != "_"
@@ -203,6 +202,37 @@ class Board
         return [y, x] if piece.is_a?(King) && colour == piece.colour
       end
     end
+  end
+
+  def print_board
+    puts "  a b c d e f g h  "
+    @board.each_with_index do |row, ind|
+      output = "#{ind} "
+      row.each do |piece|
+       if piece == "_"
+        output += "_ "
+       else
+         if piece.colour == "black"
+            output += "♜ " if piece.is_a?(Rook)
+            output += "♝ " if piece.is_a?(Bishop)
+            output += "♞ " if piece.is_a?(Knight)
+            output += "♟︎ " if piece.is_a?(Pawn)
+            output += "♛ " if piece.is_a?(Queen)
+            output += "♚ " if piece.is_a?(King)
+          else
+            output += "♖ " if piece.is_a?(Rook)
+            output += "♗ " if piece.is_a?(Bishop)
+            output += "♘ " if piece.is_a?(Knight)
+            output += "♙ " if piece.is_a?(Pawn)
+            output += "♕ " if piece.is_a?(Queen)
+            output += "♔ " if piece.is_a?(King)
+          end
+        end
+      end
+      output += "#{ind}"
+      puts output
+    end
+    puts "  a b c d e f g h  "
   end
 
 end
